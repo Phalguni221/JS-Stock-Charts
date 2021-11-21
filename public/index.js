@@ -32,7 +32,7 @@ stocks.forEach( stock => stock.values.reverse())
     new Chart(timeChartCanvas.getContext('2d'), {
         type: 'line',
         data: {
-            labels: stocks[0].values.map(value => value.symbol),
+            labels: stocks[0].values.map(value => value.datetime),
             datasets: stocks.map( stock => ({
                 label: stock.meta.symbol,
                 data: stock.values.map(value => parseFloat(value.high)),
@@ -61,3 +61,4 @@ stocks.forEach( stock => stock.values.reverse())
 });
 
 }
+main()
