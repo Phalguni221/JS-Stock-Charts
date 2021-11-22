@@ -16,7 +16,7 @@ function getColor(stock){
 async function main() {
 
     const timeChartCanvas = document.querySelector('#time-chart');
-//     const highestPriceChartCanvas = document.querySelector('#highest-price-chart');
+    const highestPriceChartCanvas = document.querySelector('#highest-price-chart');
 //     const averagePriceChartCanvas = document.querySelector('#average-price-chart');
 
 //    let response = await fetch('https://api.twelvedata.com/time_series?symbol=GME,%20MSFT,%20DIS,%20BNTX&interval=1min&apikey=156e07f34dd049f8a78d78d99fb43c7e')
@@ -42,26 +42,43 @@ stocks.forEach(stock => stock.values.reverse())
         }
     });
 
-    new Chart(timeChartCanvas.getContext('2d'), {
+    new Chart(highestPriceChartCanvas.getContext('2d'), {
         type: 'bar',
-        data: {
-            labels: stocks.map(stock => stock.meta.symbol),
-            datasets: [{
-                label: "The Highest Stock Price",
-                data: stocks.map(stock => highestPrice(stock.values)),
-                backgroundColor: stocks.map(stock => getColor(stock.meta.symbol)),
-                borderColor: stocks.map(stock => getColor(stock.meta.symbol))
-             }]
+     data: {
+labels: stocks.map(stock => stock.meta.symbol),
+datasets: [{
+  label: "The Highest Stock Price",
+ backgroundColor: stocks.map(stock => 
+    (getColor(stock.meta.symbol)
+)),
+ borderColor: stocks.map(stock => (getColor(stock.meta.symbol)
+ )),
+data: stocks.map(stock => (gethighestPrice(stock.values)
+        ))
+    }]
+}
+
+});
+
+}
+
+
+function gethighestPrice(values) {
+    let highest = 0;
+    values.forEach(value => {
+        if (parseFloat(value.high) > highest) {
+            highest = value.high
         }
-    });
+    })
+    return highest
 }
-function  highestPrice(values) {
-    let highestvalue = 0;
-   values.forEach(value=> {
-    if (parseFloat(value.high) > highestvalue) {
-        highestvalue= value.high
-    }
-   })
-   return highestvalue;
+
+function calculateAverage(values) {
+    let total = 0;
+    values.forEach(value => {
+        total += parseFloat(value.high)
+    })
+    return total / values.length
 }
+
 main()
